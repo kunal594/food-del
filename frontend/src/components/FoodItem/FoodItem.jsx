@@ -30,7 +30,7 @@ const FoodItem = ({id,name,price,description,image}) => {
                 {description}
             </p>
             <p className="food-item-price">${price}</p>
-            <p>hey</p>
+            
         </div>
     </div>
   )
