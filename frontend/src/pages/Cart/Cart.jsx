@@ -3,7 +3,7 @@ import './Cart.css'
 import {StoreContext} from '../../context/StoreContext'
 import {useNavigate} from 'react-router-dom';
 const Cart = () => {
-  const {cartItems,food_list, removeFromCart, getTotalCartAmount} = useContext(StoreContext);
+  const {cartItems,food_list, removeFromCart, getTotalCartAmount,url} = useContext(StoreContext);
   const navigate = useNavigate();
   return (
     
@@ -19,30 +19,33 @@ const Cart = () => {
        </div>
 <br />
 <hr />
-{food_list.map((item,index)=>{
-  if(cartItems[item._id]>0)
-  {
+{food_list.map((item) => {
+  // Safely retrieve the quantity from cartItems, defaulting to 0 if not found
+  const quantity = cartItems[item._id] ?? 0;
+
+  // Only render the item if its quantity is greater than 0
+  if (quantity > 0) {
     return (
- <div>
-  <div key={index} className='cart-items-title  cart-items-item'>
-    <img src={item.image} alt=""/>
-    <p>{item.name}</p>
-    <p>${item.price}</p>
-    <p>{cartItems[item._id]}</p>
-    <p>${item.price*cartItems[item._id]}</p>
-    
-    <p onClick={()=>removeFromCart(item._id)} className='cross'>x</p>
+      <div key={item._id}> {/* Use item._id as the key */}
+        <div className="cart-items-title cart-items-item">
+          <img src={url + "/images/" + item.image} alt={item.name} />
+          <p>{item.name}</p>
+          <p>${item.price}</p>
+          <p>{quantity}</p>
+          <p>${(item.price * quantity).toFixed(2)}</p> {/* Format total to 2 decimal places */}
+          <p onClick={() => removeFromCart(item._id)} className="cross">x</p>
+        </div>
+        <hr />
       </div>
-      <hr/>
-      </div>
-    )
-    
+    );
   }
+  return null; // Return null if quantity is 0 or undefined, which avoids rendering empty divs
 })}
+
       </div>
       <div className="cart-bottom">
         <div className="cart-total">
-          <h2>Cart Total</h2>
+          <h2>Cart Totals</h2>
         <div>
      
       <div className="cart-total-details">
