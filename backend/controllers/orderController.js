@@ -1,7 +1,8 @@
 import orderModel from "../models/orderModel.js";
 import userModel from '../models/userModel.js'
 import Stripe from "stripe"
-//import Razorpay from "razorpay"
+import 'dotenv/config';
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 // placeing user order for frontend
 const placeOrder = async (req, res) => {
@@ -19,7 +20,7 @@ const placeOrder = async (req, res) => {
    
     const line_items = req.body.items.map((item) => ({
       price_data: {
-        currency: "usa",
+        currency: "usd",
         product_data: {
           name: item.name
         },
@@ -29,7 +30,7 @@ const placeOrder = async (req, res) => {
     }));
     line_items.push({
       price_data: {
-        currency: "usa",
+        currency: "usd",
         product_data: {
           name: "Delivery Charges"
         },
